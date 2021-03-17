@@ -24,3 +24,5 @@ Here, assessment as follows:
 https://emedicine.medscape.com/article/1188764-overview
 
 https://web.archive.org/web/20070929205410/http://www.sleep-tests.co.uk/polysomnography.php
+
+https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Library
