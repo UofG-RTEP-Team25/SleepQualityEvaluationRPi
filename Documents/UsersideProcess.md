@@ -8,13 +8,15 @@ Current:
 - [x] MySQL
 - [x] PHP
 - [x] test connection
-- [ ] frontside build
-  - [ ] html
+- [x] frontside build
+  - [x] html
   - [ ] css (do it later)
-  - [ ] js
-- [ ] relate to db (php)
-- [ ] test for show up data
+  - ~~[ ] js~~
+- [x] relate to db (php)
+- [x] test for show up data
 - [ ] Pi to server (TCP/IP)
-  - [ ] scripts
+  - [x] scripts
   - [ ] test
 - [ ] test for avaliable
+
+NO TIME TO WASTE!
