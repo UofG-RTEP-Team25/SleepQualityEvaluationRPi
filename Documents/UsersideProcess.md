@@ -14,9 +14,9 @@ Current:
   - ~~[ ] js~~
 - [x] relate to db (php)
 - [x] test for show up data
-- [ ] Pi to server (TCP/IP)
+- [x] Pi to server (TCP/IP)
   - [x] scripts
-  - [ ] test
-- [ ] test for avaliable
+  - [x] test (data from Pi)
+- [ ] test for avaliable (data from sensor)
 
 NO TIME TO WASTE!
