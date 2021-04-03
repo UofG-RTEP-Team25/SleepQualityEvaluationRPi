@@ -1,6 +1,9 @@
 #include <wiringPi.h>
 #include <stdio.h>
+#include <iostream>
 #include "i2c.h"
+
+using namespace std;
 
 void i2c_init(char scl, char sda)
 {
@@ -136,5 +139,110 @@ unsigned char i2c_read_Byte(char scl, char sda, int ack)
 	return receive;
 }
 
+
+
+
+
+void i2c_write_reg8(  char scl , char sda , unsigned char write_addr , unsigned char write_reg , int data)
+{
+	i2c_start(scl , sda);
+	i2c_send_Byte(scl , sda , write_addr);
+	if(!i2c_wait_ack(scl , sda))
+	{
+		i2c_send_Byte(scl , sda , write_reg);
+		if(!i2c_wait_ack(scl , sda))
+		{
+			i2c_send_Byte(scl , sda , data);
+			if(!i2c_wait_ack(scl , sda))  i2c_stop(scl , sda);
+			else cout << " ack erro 1 " << "\n";
+		}
+		else cout << " ack erro 2 " << "\n";
+	}
+	else cout << " ack erro 3 " << "\n";
+
+}
+
+
+
+unsigned char  i2c_read_reg8_singleByte( char scl , char sda , unsigned char write_addr , unsigned char read_addr , unsigned char read_reg)
+{
+	unsigned char val = 0;
+	i2c_start(scl , sda);
+	i2c_send_Byte(scl , sda , write_addr);
+	if(!i2c_wait_ack(scl , sda))
+	{
+		i2c_send_Byte(scl , sda , read_reg);
+		if(!i2c_wait_ack(scl , sda))
+		{
+			i2c_start(scl , sda);
+			i2c_send_Byte(scl , sda , read_addr);
+			if(!i2c_wait_ack(scl , sda))
+			{
+					
+				val = i2c_read_Byte(scl , sda , 0);
+				i2c_stop(scl , sda);
+				return val;
+		
+			}
+			else 
+			{
+				cout << " ack erro 4 " << "\n";
+				return -1;
+			}
+		}
+		else 
+		{
+			cout << " ack erro 5 " << "\n";
+			return -1;
+		}
+	}
+	else 
+	{
+		cout << " ack erro 6 " <<"\n";
+		return -1;
+	}
+
+}
+
+
+
+unsigned char  i2c_read_reg_Setup( char scl , char sda , unsigned char write_addr , unsigned char read_addr , unsigned char read_reg)
+{
+	unsigned char val = 0;
+	i2c_start(scl , sda);
+	i2c_send_Byte(scl , sda , write_addr);
+	if(!i2c_wait_ack(scl , sda))
+	{
+		i2c_send_Byte(scl , sda , read_reg);
+		if(!i2c_wait_ack(scl , sda))
+		{
+			i2c_start(scl , sda);
+			i2c_send_Byte(scl , sda , read_addr);
+			if(!i2c_wait_ack(scl , sda))
+			{
+					
+				val = 1;
+				return val;
+		
+			}
+			else 
+			{
+				cout << " ack erro 4 " << "\n";
+				return 0;
+			}
+		}
+		else 
+		{
+			cout << " ack erro 5 " << "\n";
+			return 0;
+		}
+	}
+	else 
+	{
+		cout << " ack erro 6 " <<"\n";
+		return 0;
+	}
+
+}
 
 
