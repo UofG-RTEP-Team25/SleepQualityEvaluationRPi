@@ -90,7 +90,7 @@
 <body>
 
 <script>
-  function check(){
+  function initial(){
     $.ajax({
       type:"GET",
       url:"./demo.php",
@@ -363,11 +363,11 @@
             var ctx_mx = document.getElementById('c_mx').getContext('2d');
             var ctx_my = document.getElementById('c_my').getContext('2d');
             var ctx_mz = document.getElementById('c_mz').getContext('2d');
-            window.myLine = new Chart(ctx_sound, config_sound);
-            window.myLine = new Chart(ctx_light, config_light);
-            window.myLine = new Chart(ctx_mx, config_mx);
-            window.myLine = new Chart(ctx_my, config_my);
-            window.myLine = new Chart(ctx_mz, config_mz);
+            window.soundChart = new Chart(ctx_sound, config_sound);
+            window.lightChart = new Chart(ctx_light, config_light);
+            window.mxChart = new Chart(ctx_mx, config_mx);
+            window.myChart = new Chart(ctx_my, config_my);
+            window.mzChart = new Chart(ctx_mz, config_mz);
         }else{
           alert('error');
         }
@@ -377,7 +377,77 @@
       }
     });
   }
-  window.setInterval(check, 5000); //每5秒执行一次
+
+  function update()
+  {
+    $.ajax({
+      type:"GET",
+      url:"./demo.php",
+      dataType:"json",
+      success:function(data){
+        if(data.success){
+          var count = data.info.length;
+          var sound = new Array();
+          var light = new Array();
+          var movement_x = new Array();
+          var movement_y = new Array();
+          var movement_z = new Array();
+          var date = new Array();
+          var c_time = new Date();
+            for(i=0;i<count;i++){
+              var dom = "<tr align='center' id='"+data.info[i].id+"'><td>"+data.info[i].id+"</td><td>"+data.info[i].appraise+"</td><td>"+data.info[i].sound+"</td><td>"+data.info[i].light+"</td><td>"+data.info[i].movement_x+"</td><td>"+data.info[i].movement_y+"</td><td>"+data.info[i].movement_z+"</td><td>"+data.info[i].time+"</td></tr>";
+              var tag = '#'+data.info[i].id;
+              sound[i] = data.info[i].sound;
+              light[i] = data.info[i].light;
+              movement_x[i] = data.info[i].movement_x;
+              movement_y[i] = data.info[i].movement_y;
+              movement_z[i] = data.info[i].movement_z;
+              date[i] = data.info[i].time;
+              if(!$(tag).length){
+                $("#info").append(dom);
+              }
+            }
+            
+            $('div.appraise').html(data.info[data.info.length - 1].appraise.toString());
+
+            yy = c_time.getFullYear();
+            mm = c_time.getMonth();
+            dd = c_time.getDate();
+            h = c_time.getHours();
+            m = c_time.getMinutes();
+            s = c_time.getSeconds();
+            t_str = yy + "-" + mm + "-" + dd + " " + h + ":" + m + ":" + s;
+            $('p#i_time').html(t_str);
+            $('p#i_count').html(count.toString());
+            //document.write(t_str);
+
+            window.soundChart.data.datasets[0].data = sound;
+            window.lightChart.data.datasets[0].data = light;
+            window.mxChart.data.datasets[0].data = movement_x;
+            window.myChart.data.datasets[0].data = movement_y;
+            window.mzChart.data.datasets[0].data = movement_z;
+
+            window.soundChart.update();
+            window.lightChart.update();
+            window.mxChart.update();
+            window.myChart.update();
+            window.mzChart.update();
+        }else{
+          alert('error');
+        }
+    },
+      error:function(res){
+        alert(res.status);
+      }
+    });
+
+
+  }
+
+  window.onload = function(){
+      initial();
+  }
+  window.setInterval(update, 5000); //每5秒执行一次
 </script>
 <body>
     <!-- 隐藏数据表格 -->
