@@ -16,6 +16,20 @@ Here, assessment as follows:
 * Sleep efficiency, which is the minutes of total sleep divided by the minutes spent on bed. In normal cases, it falls between 85%-90%.
 
 * Sleep stages, which are based on the data coming from various kinds of sensors, like sound sensors, light sensors, motion sensors as well as heart rhythm sensors.
+
+# Data Visualization example
+By using mysql database, the local Raspberry Pi can connect and push the data to the database, and the website can grabbing and showing the data in properly way to the user.
+
+The site is based on *Ubuntu Linux* system, *Apache* server, *MySQL* database and most of pages are wrriten by *HTML*, *CSS*, *JavaScript* and *PHP*. *jQuery* and *Chart.js* are also being used for efficiency and goodlooking.
+
+Here is an example page for what data will be showing: http://78.141.235.21/rtshow.html
+
+~~It may took around 5 seconds to showing, better viewing implementation is developing by team member.~~
+
+Better view has been implemented. the page will showing data when the page finished load and update the data every 5 seconds. Chart will transform smoothly.
+
+![view-example1](https://github.com/UofG-RTEP-Team25/SleepQualityEvaluationRPi/blob/main/Documents/img/view-example1.png?raw=true)
+
 # References
 [Sleep Evaluation by Actigraphy .pdf](https://github.com/UofG-RTEP-Team25/SleepQualityEvaluationRPi/files/6055883/Sleep.Evaluation.by.Actigraphy.pdf)
 

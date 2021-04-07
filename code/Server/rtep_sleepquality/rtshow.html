@@ -1,0 +1,547 @@
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>SleepQuality Monitor</title>
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <script src="./utils.js"></script>
+  <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+          font-family: Helvetica;
+          margin: 0;
+      }
+
+      .header {
+          padding: 60px;
+          text-align: center;
+          background: lightskyblue;
+          color: white;
+      }
+
+      .row{
+          display: flex;
+          flex-wrap: wrap;
+      }
+
+      .side {
+          flex: 10%;
+          background-color: wheat;
+          padding: 20px;
+      }
+
+      .appraise {
+          background-color: aqua;
+          width: 100%;
+          padding: 20px;
+          text-align: center;
+          vertical-align: middle;
+          font-size: 60px;
+      }
+
+      .main {
+          flex: 90%;
+          background-color: white;
+          padding: 20px;
+      }
+
+      .footer {
+          padding: 20px;
+          text-align: center;
+          background: #ddd;
+      }
+
+      @media screen and (max-width: 700px) {
+          .row {
+              flex-direction: column;
+          }
+      }
+
+      canvas {
+          -moz-user-select: none;
+          -webkit-user-select: none;
+          -ms-suer-select: none;
+      }
+
+      .chart-container {
+        width: 550px;
+        height: 250px;;
+        margin-left: 40px;
+        margin-right: 40px;
+        margin-bottom: 40px;
+      }
+
+      .container {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+      }
+
+      .dataTable {
+          display: none;
+      }
+  </style>
+</head>
+<body>
+
+<script>
+  function initial(){
+    $.ajax({
+      type:"GET",
+      url:"./demo.php",
+      dataType:"json",
+      success:function(data){
+        if(data.success){
+          var count = data.info.length;
+          var sound = new Array();
+          var light = new Array();
+          var movement_x = new Array();
+          var movement_y = new Array();
+          var movement_z = new Array();
+          var date = new Array();
+          var c_time = new Date();
+            for(i=0;i<count;i++){
+              var dom = "<tr align='center' id='"+data.info[i].id+"'><td>"+data.info[i].id+"</td><td>"+data.info[i].appraise+"</td><td>"+data.info[i].sound+"</td><td>"+data.info[i].light+"</td><td>"+data.info[i].movement_x+"</td><td>"+data.info[i].movement_y+"</td><td>"+data.info[i].movement_z+"</td><td>"+data.info[i].time+"</td></tr>";
+              var tag = '#'+data.info[i].id;
+              sound[i] = data.info[i].sound;
+              light[i] = data.info[i].light;
+              movement_x[i] = data.info[i].movement_x;
+              movement_y[i] = data.info[i].movement_y;
+              movement_z[i] = data.info[i].movement_z;
+              date[i] = data.info[i].time;
+              if(!$(tag).length){
+                $("#info").append(dom);
+              }
+            }
+
+            $('div.appraise').html(data.info[data.info.length - 1].appraise.toString());
+
+            yy = c_time.getFullYear();
+            mm = c_time.getMonth();
+            dd = c_time.getDate();
+            h = c_time.getHours();
+            m = c_time.getMinutes();
+            s = c_time.getSeconds();
+            t_str = yy + "-" + mm + "-" + dd + " " + h + ":" + m + ":" + s;
+            $('p#i_time').html(t_str);
+            $('p#i_count').html(count.toString());
+            //document.write(t_str);
+
+        
+            var config_sound = {
+                type: 'line',
+                data: {
+                    labels: date,
+                    datasets: [{
+                        label: 'Sound',
+                        backgroundColor: window.chartColors.red,
+                        borderColor: window.chartColors.red,
+                        data: sound,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Sound'
+                    },
+                    tooltips: {
+                        mode: 'point',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Intensity(Db)'
+                            }
+                        }]
+                    }
+                }
+            };
+
+            var config_light = {
+                type: 'line',
+                data: {
+                    labels: date,
+                    datasets: [{
+                        label: 'Light',
+                        backgroundColor: window.chartColors.orange,
+                        borderColor: window.chartColors.orange,
+                        data: light,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Light Line Chart'
+                    },
+                    tooltips: {
+                        mode: 'point',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Intensity'
+                            }
+                        }]
+                    }
+                }
+            };
+
+            var config_mx = {
+                type: 'line',
+                data: {
+                    labels: date,
+                    datasets: [{
+                        label: 'X-Axis Movement',
+                        backgroundColor: window.chartColors.yellow,
+                        borderColor: window.chartColors.yellow,
+                        data: movement_x,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'X-Axis Movement Line Chart'
+                    },
+                    tooltips: {
+                        mode: 'point',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Intensity'
+                            }
+                        }]
+                    }
+                }
+            };
+
+            var config_my = {
+                type: 'line',
+                data: {
+                    labels: date,
+                    datasets: [{
+                        label: 'Y-Axis Movement',
+                        backgroundColor: window.chartColors.green,
+                        borderColor: window.chartColors.green,
+                        data: movement_y,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Y-Axis Movement Line Chart'
+                    },
+                    tooltips: {
+                        mode: 'point',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Intensity'
+                            }
+                        }]
+                    }
+                }
+            };
+
+            var config_mz = {
+                type: 'line',
+                data: {
+                    labels: date,
+                    datasets: [{
+                        label: 'Z-Axis Movement',
+                        backgroundColor: window.chartColors.blue,
+                        borderColor: window.chartColors.blue,
+                        data: movement_z,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Z-Axis Movement Line Chart'
+                    },
+                    tooltips: {
+                        mode: 'point',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Intensity'
+                            }
+                        }]
+                    }
+                }
+            };
+
+            var ctx_sound = document.getElementById('c_sound').getContext('2d');
+            var ctx_light = document.getElementById('c_light').getContext('2d');
+            var ctx_mx = document.getElementById('c_mx').getContext('2d');
+            var ctx_my = document.getElementById('c_my').getContext('2d');
+            var ctx_mz = document.getElementById('c_mz').getContext('2d');
+            window.soundChart = new Chart(ctx_sound, config_sound);
+            window.lightChart = new Chart(ctx_light, config_light);
+            window.mxChart = new Chart(ctx_mx, config_mx);
+            window.myChart = new Chart(ctx_my, config_my);
+            window.mzChart = new Chart(ctx_mz, config_mz);
+        }else{
+          alert('error');
+        }
+      },
+      error:function(res){
+        alert(res.status);
+      }
+    });
+  }
+
+  function update()
+  {
+    $.ajax({
+      type:"GET",
+      url:"./demo.php",
+      dataType:"json",
+      success:function(data){
+        if(data.success){
+          var count = data.info.length;
+          var sound = new Array();
+          var light = new Array();
+          var movement_x = new Array();
+          var movement_y = new Array();
+          var movement_z = new Array();
+          var date = new Array();
+          var c_time = new Date();
+            for(i=0;i<count;i++){
+              var dom = "<tr align='center' id='"+data.info[i].id+"'><td>"+data.info[i].id+"</td><td>"+data.info[i].appraise+"</td><td>"+data.info[i].sound+"</td><td>"+data.info[i].light+"</td><td>"+data.info[i].movement_x+"</td><td>"+data.info[i].movement_y+"</td><td>"+data.info[i].movement_z+"</td><td>"+data.info[i].time+"</td></tr>";
+              var tag = '#'+data.info[i].id;
+              sound[i] = data.info[i].sound;
+              light[i] = data.info[i].light;
+              movement_x[i] = data.info[i].movement_x;
+              movement_y[i] = data.info[i].movement_y;
+              movement_z[i] = data.info[i].movement_z;
+              date[i] = data.info[i].time;
+              if(!$(tag).length){
+                $("#info").append(dom);
+              }
+            }
+            
+            $('div.appraise').html(data.info[data.info.length - 1].appraise.toString());
+
+            yy = c_time.getFullYear();
+            mm = c_time.getMonth();
+            dd = c_time.getDate();
+            h = c_time.getHours();
+            m = c_time.getMinutes();
+            s = c_time.getSeconds();
+            t_str = yy + "-" + mm + "-" + dd + " " + h + ":" + m + ":" + s;
+            $('p#i_time').html(t_str);
+            $('p#i_count').html(count.toString());
+            //document.write(t_str);
+
+            window.soundChart.data.datasets[0].data = sound;
+            window.lightChart.data.datasets[0].data = light;
+            window.mxChart.data.datasets[0].data = movement_x;
+            window.myChart.data.datasets[0].data = movement_y;
+            window.mzChart.data.datasets[0].data = movement_z;
+
+            window.soundChart.update();
+            window.lightChart.update();
+            window.mxChart.update();
+            window.myChart.update();
+            window.mzChart.update();
+        }else{
+          alert('error');
+        }
+    },
+      error:function(res){
+        alert(res.status);
+      }
+    });
+
+
+  }
+
+  window.onload = function(){
+      initial();
+  }
+  window.setInterval(update, 5000); //每5秒执行一次
+</script>
+<body>
+    <!-- 隐藏数据表格 -->
+  <div style='width:600px;margin:0 auto;' class="dataTable">
+    <table border='1' width="600px">
+      <thead>
+        <!--
+            <tr><th>id</th><th>name</th></tr>
+        -->
+        <tr align='center' id='111'><td>ID</td><td>Appraise</td><td>Sound</td><td>Light</td><td>Movement X</td><td>Movement Y</td><td>Movement Z</td><td>Time</td></tr>  
+    </thead>
+      <tbody id='info'>
+        <!--
+            <tr align='center' id='111'><td>111</td><td>测试</td></tr>
+        -->
+      </tbody>
+    </table>
+  </div>
+
+<!-- 标题 -->
+<div class="header">
+    <h1>SleepQuality Monitor</h1>
+</div>
+
+
+<!-- 弹性布局（主要内容）-->
+<div class="row">
+    <div class="side">
+        <div style="border: solid 1px; padding: 5px;">
+            <h3>SleepQuality Appraise</h3>
+            <div class='appraise' style="height: 150px;"></div>
+            <p style="font-weight: bold;">Current time: <p id='i_time'></p></p>
+            <p style="font-weight: bold;">Data received: <p id='i_count'></p></p>
+          </div>
+    </div>
+
+    <div class="main">
+        <div class="container" style="border: solid 1px;">
+            <div class="chart-container">
+                <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand"><div class=""></div></div>
+                    <div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+                </div>
+                <canvas id="c_sound" class="chartjs-render-monitor"></canvas> 
+            </div>
+            <div class="chart-container">
+                <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand"><div class=""></div></div>
+                    <div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+                </div>
+                <canvas id="c_light" class="chartjs-render-monitor"></canvas>
+            </div>
+          </div>
+        
+          <div class="container" style="border: solid 1px;">
+            <div class="chart-container">
+                <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand"><div class=""></div></div>
+                    <div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+                </div>
+                <canvas id="c_mx" class="chartjs-render-monitor"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand"><div class=""></div></div>
+                    <div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+                </div>
+                <canvas id="c_my" class="chartjs-render-monitor"></canvas>
+            </div>   
+            <div class="chart-container">
+                <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand"><div class=""></div></div>
+                    <div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+                </div>
+                <canvas id="c_mz" class="chartjs-render-monitor"></canvas>
+            </div>
+          </div>
+    </div>
+</div>
+
+
+ <!-- 页脚 -->
+ <div class="footer">
+     <h6>UofG RETP-SleepQuality Group 2021</h6>
+ </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
