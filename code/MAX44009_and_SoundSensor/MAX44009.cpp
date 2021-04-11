@@ -17,14 +17,15 @@ void max44009_init()
 {
 	i2c_read_reg8_singleByte( 21 , 22 , WRITE_ADDR_GND , READ_ADDR_GND , INTR_STATUS);
 
-	i2c_write_reg8( 21 , 22 , WRITE_ADDR_GND , REG_CONFIG , 0X80);
+	i2c_write_reg8( 21 , 22 , WRITE_ADDR_GND , REG_CONFIG , 0X00);
 	i2c_write_reg8( 21 , 22 , WRITE_ADDR_GND , INTR_ENABLE , 0x00);
 }
 
 
 void max44009_read_light()
 {
-	int i , lux , index = 0 , num = 0 , temp_num = 0 , sqrt = 1;
+	int i , index = 0 , num = 0 , temp_num = 0 , sqrt = 1;
+	double lux;
 
 	temp_num = i2c_read_reg8_singleByte( 21 , 22 , WRITE_ADDR_GND , READ_ADDR_GND , REG_LUX_HIGH);
 	index = (temp_num & 0xf0) >> 4;
