@@ -41,13 +41,26 @@ void max44009_read_light()
 
 }
 
+
+void sound_detect()
+{
+	cout << "y" << "\n";
+}
+
+
+
 int main()
 {
 	wiringPiSetup();
 	i2c_init( 21 , 22 );
 	max44009_init();
+	pinMode(1, INPUT);
+	pullUpDnControl(1 , PUD_UP);
+	wiringPiISR(1 , INT_EDGE_FALLING , &sound_detect);
 	while(1)
 	{
+	//	if( digitalRead(1)) cout << "n" << "\n";
+	//	else cout << "y" << "\n";
 		max44009_read_light();
 		delay(2000);
 	}
