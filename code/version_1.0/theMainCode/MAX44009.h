@@ -23,7 +23,7 @@
 
 
 void max44009_init();
-void max44009_read_light();
+double max44009_read_light();
 void sound_detect();
 
 

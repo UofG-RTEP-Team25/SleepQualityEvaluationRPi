@@ -8,6 +8,8 @@
 
 using namespace std;
 
+extern string mov;
+
 
 struct acc_dat{
 	int x;
@@ -20,9 +22,9 @@ void move_detect()
 	int val = 0;
 	val =  i2c_read_reg8_singleByte(12 , 13 ,0xA6 , 0xA7 , INT_SOURCE);
 	val &= 0x18;
-	if((val & 0x18) == 0x10) cout << "active" << "\n";
-	else if((val & 0x18) == 0x08) cout << "inactive" << "\n";
-	else cout << "error" << "\n";
+	if((val & 0x18) == 0x10) mov = "active";
+	else if((val & 0x18) == 0x08) mov = "inactive";
+	else mov = "error" ;
 }
 
 

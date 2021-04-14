@@ -10,7 +10,8 @@
 
 using namespace std;
 
-
+extern string Db;
+extern int count;
 
 
 void max44009_init()
@@ -22,29 +23,29 @@ void max44009_init()
 }
 
 
-void max44009_read_light()
+double max44009_read_light()
 {
-	int i , index = 0 , num = 0 , temp_num = 0 , sqrt = 1;
+	int i , index = 0 , num = 0 , temp_num = 0 , square = 1;
 	double lux;
 
 	temp_num = i2c_read_reg8_singleByte( 21 , 22 , WRITE_ADDR_GND , READ_ADDR_GND , REG_LUX_HIGH);
 	index = (temp_num & 0xf0) >> 4;
 	for(i = 0;i < index;i++)
 	{
-		sqrt *= 2;
+		square *= 2;
 	}
 	num = temp_num & 0x0f;
-	lux = sqrt * num * 0.72;
-	cout << index << "\n";
-	cout << num << "\n";
-	cout << "lux:" << lux <<"\n" << "\n";
+	lux = square * num * 0.72;
+
+	return lux;
 
 }
 
 
 void sound_detect()
 {
-	cout << "y" << "\n";
+	count = 50;
+	Db = "noisy";
 }
 
 

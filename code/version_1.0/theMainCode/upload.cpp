@@ -10,34 +10,6 @@
 
 using namespace std;
 
-int main(int argc,char *argv[])
-{
-    #pragma region Prepare
-    /***
-     * 
-     * Comment Writter:    Yangbolun Zhou
-     * Date:               2021/03/20
-     * 
-     * appraise            top 100 minue 0 for evaluate if user have a good sleep
-     * sound               int value for evaluate environment sound
-     * light               int value for evaluate environment light
-     * m_x                 float value for evaluate user's movement in x-axis
-     * m_y                 float value for evaluate user's movement in y-axis
-     * m_z                 float value for evaluate user's movement in z-axis
-     * time                string value for record data's time, the format should be exactly like "YYYY-MM-DD hh:mm:ss"
-     * 
-     * All the value showing below is just an example, you can give your value read from sensor to them.
-     * Do not forget to format to correct data type.
-     * 
-     * This script is using mysql.h so it is nesseary to install mariadb(mysql) first, I recommand to install both client and dev packages.
-     * before to compile this file, it is nesseary to use g++ upload.cpp -o XXXX -I/usr/include/mysql -lmysqlclient
-     * upload.cpp is this script or your can include this file and compile your main file by give your main file's name.
-     * XXX is the output file's name
-     * 
-     **/
-
-
-
 
 
  /*****   int appraise =  95;
@@ -80,6 +52,12 @@ int main(int argc,char *argv[])
     return 0;
     #pragma endregion Upload *****/
 
+int count = 0 , hr = -999;
+double lux;
+string Db = "quiet" , mov = "inactive";
+
+int main(int argc,char *argv[])
+{
 
 	wiringPiSetup();
 	i2c_init(12 , 13);//  I2C interface initialization for ADXL345
@@ -105,8 +83,17 @@ int main(int argc,char *argv[])
 
 	while(1)
 	{
-		max44009_read_light();
-		delay(2000);
+		lux = max44009_read_light();
+		cout << Db << endl;
+		cout << lux << endl;
+		cout << mov << endl;
+		cout << hr << endl << endl;
+		while(count)
+		{
+			count--;
+			if(count == 0) Db = "quiet";
+		}
+		delay(1000);
 	}
 
 

@@ -10,6 +10,8 @@
 
 using namespace std;
 
+extern int hr;
+
 int fd , rd_ptr = 0 , ir_data = 0 , tem , sample_num = 0;
 uint32_t data_buffer[100] , non_buffer[100];
 int32_t n_sp02 , n_heart_rate;
@@ -76,12 +78,12 @@ void max30102_read_hr( void )// read hear rates data from MAX30102.
 	{
 		sample_num = 0;
 		maxim_heart_rate_and_oxygen_saturation( data_buffer , 100 , non_buffer , &n_sp02 , &ch_spo2_valid , &n_heart_rate , &ch_hr_valid);//calculate HR with saved data from FIFO.
-		cout << n_heart_rate << "\n";
+		hr = n_heart_rate;
 		
 		//read chip temperature.
-		i2c_write_reg8(9 , 8 , 0xAE , 0x21 , 0x01);// enable temperature sensor
+	/*	i2c_write_reg8(9 , 8 , 0xAE , 0x21 , 0x01);// enable temperature sensor
 		temp = i2c_read_reg8_singleByte(9 , 8 , 0xAE , 0xAF , 0x1f) + 0.625*i2c_read_reg8_singleByte(9 , 8 , 0xAE , 0xAF , 0x20);//read data from register and calculate temperature.
-		cout << "TEMP:" << temp << "\n" << "\n";
+		cout << "TEMP:" << temp << "\n" << "\n";*/
 	}
 
 	//clear interrupt.
