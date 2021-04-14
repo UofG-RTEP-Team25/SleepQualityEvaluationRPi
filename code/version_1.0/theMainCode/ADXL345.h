@@ -33,6 +33,11 @@
 #define FIFO_CTL       0x38
 #define FIFO_STATUS    0x39
 
+#define WRITE_ADDR     0XA6
+#define READ_ADDR      0XA7
+
+void move_detect();
+void adxl345_init();
 
 
 
