@@ -431,7 +431,7 @@ void start()   //逻辑开始
 	}*/
 	sp_state=2;
 	while(sp_state==2){   //睡眠质量评估
-			if(last_time>=100)  //5s到
+			if(last_time>=10)  //5s到
 			{
 				printf("hr=%d ADX=%d sound=%d light=%d\r\n",hr_num,adx_num,light_num,sound());
 				c=hr_dispose(hr_num);  	//心跳
