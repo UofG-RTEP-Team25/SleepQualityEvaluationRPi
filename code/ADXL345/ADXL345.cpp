@@ -24,7 +24,7 @@ void move_detect()
 	val &= 0x18;
 	if((val & 0x18) == 0x10) cout << "active" << "\n";
 	else if((val & 0x18) == 0x08) cout << "inactive" << "\n";
-	else cout << "erro" << "\n";
+	else cout << "error" << "\n";
 
 }
 
