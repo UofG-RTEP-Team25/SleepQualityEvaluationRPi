@@ -15,9 +15,9 @@ int main(int argc,char *argv[])
      * appraise            top 100 minue 0 for evaluate if user have a good sleep
      * sound               int value for evaluate environment sound
      * light               int value for evaluate environment light
-     * m_x                 float value for evaluate user's movement in x-axis
-     * m_y                 float value for evaluate user's movement in y-axis
-     * m_z                 float value for evaluate user's movement in z-axis
+     * m_x                 float value for evaluate user's movement
+     * m_y                 deleted
+     * m_z                 deleted
      * time                string value for record data's time, the format should be exactly like "YYYY-MM-DD hh:mm:ss"
      * 
      * All the value showing below is just an example, you can give your value read from sensor to them.
@@ -34,8 +34,6 @@ int main(int argc,char *argv[])
     int sound = 5;
     int light = 5;
     float m_x = 1.2f;
-    float m_y = 1.1f;
-    float m_z = 2.5f;
     char time[20] = "2021-03-20 04:06:35";
     
     #pragma endregion Prepare
@@ -50,7 +48,7 @@ int main(int argc,char *argv[])
         cout << "connect success" << endl;
         //res = mysql_query(conn, "insert into test values('user','123456')");
 
-        snprintf(str, 185, "insert into sleepquality_db.information_list (appraise, sound, light, movement_x, movement_y, movement_z, time) values (%d, %d, %d, %f, %f, %f, '%s');", appraise, sound, light, m_x, m_y, m_z, time);
+        snprintf(str, 185, "insert into sleepquality_db.information_list (appraise, sound, light, movement_x, movement_y, movement_z, time) values (%d, %d, %d, %f, %f, %f, '%s');", appraise, sound, light, m_x, 0.0f, 0.0f, time);
         cout << str << endl;
         //mysql_query(conn,str);
  
