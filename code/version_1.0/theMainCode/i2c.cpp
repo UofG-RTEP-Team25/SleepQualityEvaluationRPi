@@ -4,9 +4,7 @@
 #include "i2c.h"
 
 using namespace std;
-class IIC{
-	public:
-	
+
 void i2c_init(char scl, char sda)
 {
 	wiringPiSetup();
@@ -246,4 +244,5 @@ unsigned char  i2c_read_reg_Setup( char scl , char sda , unsigned char write_add
 	}
 
 }
-};
+
+
