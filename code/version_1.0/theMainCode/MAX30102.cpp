@@ -78,7 +78,8 @@ void max30102_read_hr( void )// read hear rates data from MAX30102.
 	{
 		sample_num = 0;
 		maxim_heart_rate_and_oxygen_saturation( data_buffer , 100 , non_buffer , &n_sp02 , &ch_spo2_valid , &n_heart_rate , &ch_hr_valid);//calculate HR with saved data from FIFO.
-		hr = n_heart_rate;
+                if(n_heart_rate == -999) hr = 0;
+		else hr = n_heart_rate;
 		
 		//read chip temperature.
 	/*	i2c_write_reg8(9 , 8 , 0xAE , 0x21 , 0x01);// enable temperature sensor

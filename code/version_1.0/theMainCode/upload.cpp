@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <wiringPi.h>
-//#include <mysql/mysql.h>
+#include <thread>
+#include <mysql/mysql.h>
 #include "i2c.h"
 #include "ADXL345.h"
 #include "MAX30102.h"
@@ -11,13 +12,13 @@
 using namespace std;
 
 
-
- /*****   int appraise =  95;
-    int sound = 5;
-    int light = 5;
+void UploadData(int hr, double lux)
+{
+    int appraise =  85;
+    int sound = hr;
+    int light = lux;
     float m_x = 1.2f;
-    float m_y = 1.1f;
-    float m_z = 2.5f;
+
     char time[20] = "2021-03-20 04:06:35";
     
     #pragma endregion Prepare
@@ -32,7 +33,7 @@ using namespace std;
         cout << "connect success" << endl;
         //res = mysql_query(conn, "insert into test values('user','123456')");
 
-        snprintf(str, 185, "insert into sleepquality_db.information_list (appraise, sound, light, movement_x, movement_y, movement_z, time) values (%d, %d, %d, %f, %f, %f, '%s');", appraise, sound, light, m_x, m_y, m_z, time);
+        snprintf(str, 185, "insert into sleepquality_db.information_list (appraise, sound, light, movement_x, movement_y, movement_z, time) values (%d, %d, %d, %f, %f, %f, '%s');", appraise, sound, light, m_x, 0.0f, 0.0f, time);
         cout << str << endl;
         //mysql_query(conn,str);
  
@@ -49,10 +50,18 @@ using namespace std;
     {
         cout << "connect failed" << endl;
     }
-    return 0;
+    return;
     #pragma endregion Upload *****/
 
-int count = 0 , hr = -999;
+
+}
+
+
+
+
+
+
+int count = 0 , hr = 0;
 double lux;
 string Db = "quiet" , mov = "inactive";
 
@@ -84,15 +93,20 @@ int main(int argc,char *argv[])
 	while(1)
 	{
 		lux = max44009_read_light();
-		cout << Db << endl;
-		cout << lux << endl;
-		cout << mov << endl;
-		cout << hr << endl << endl;
+
+	//	cout << Db << endl;
+	//	cout << lux << endl;
+	//	cout << mov << endl;
+	//	cout << hr << endl << endl;
 		while(count)
 		{
 			count--;
 			if(count == 0) Db = "quiet";
 		}
+
+		thread job1(UploadData , hr , lux);
+		job1.join();
+
 		delay(1000);
 	}
 
