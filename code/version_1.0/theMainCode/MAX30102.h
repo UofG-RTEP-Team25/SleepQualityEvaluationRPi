@@ -27,6 +27,12 @@
 #define REG_PART_ID 0XFF
 
 
+void max30102_init();
+void max30102_read_hr(void);
+
+
+
+
 #endif
 
 
