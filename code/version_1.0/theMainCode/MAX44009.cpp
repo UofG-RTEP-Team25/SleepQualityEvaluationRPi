@@ -10,7 +10,7 @@
 
 using namespace std;
 
-extern string Db;
+extern int Db;
 extern int count;
 
 
@@ -45,7 +45,7 @@ double max44009_read_light()
 void sound_detect()
 {
 	count = 50;
-	Db = "noisy";
+	Db = 1;
 }
 
 

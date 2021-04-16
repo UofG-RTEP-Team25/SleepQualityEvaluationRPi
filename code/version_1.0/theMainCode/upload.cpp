@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <iostream>
 #include <wiringPi.h>
@@ -12,16 +13,21 @@
 using namespace std;
 
 
-void UploadData(int hr, double lux, string mov, string Db)
+void UploadData(int hr, double lux, int mov, int Db)
 {
    // int appraise =  85;
     int HR = hr;
     float LUX = lux;
 
-    char db[20] = "quiet" , mov[20] = "inactive";
+    char DB[20] = "quiet" , MOV[20] = "inactive";
   //  float m_x = 1.2f;
 
     char time[20] = "2021-03-20 04:06:35";
+
+    if(Db == 0) strcpy(DB , "quiet");
+    else strcpy(DB , "noisy");
+    if(mov == 0) strcpy(MOV , "inactive");
+    else strcpy(MOV , "active");
     
     #pragma endregion Prepare
 
@@ -35,7 +41,7 @@ void UploadData(int hr, double lux, string mov, string Db)
         cout << "connect success" << endl;
         //res = mysql_query(conn, "insert into test values('user','123456')");
 
-        snprintf(str, 185, "insert into sleepquality_db.newinformation_list (hr, mov, DB, lux, time) values (%d, '%s', '%s', %f, '%s');", HR, mov, db, LUX, time);
+        snprintf(str, 185, "insert into sleepquality_db.newinformation_list (hr, mov, DB, lux, time) values (%d, '%s', '%s', %f, '%s');", HR, MOV, DB, LUX, time);
         cout << str << endl;
         //mysql_query(conn,str);
  
@@ -65,7 +71,7 @@ void UploadData(int hr, double lux, string mov, string Db)
 
 int count = 0 , hr = 0;
 double lux;
-string Db = "quiet" , mov = "inactive";
+int  Db = 0 , mov = 0;
 
 int main(int argc,char *argv[])
 {
@@ -100,14 +106,15 @@ int main(int argc,char *argv[])
 	//	cout << lux << endl;
 	//	cout << mov << endl;
 	//	cout << hr << endl << endl;
-		while(count)
-		{
-			count--;
-			if(count == 0) Db = "quiet";
-		}
 
 		thread job1(UploadData , hr , lux , mov , Db);
 		job1.join();
+
+		while(count)
+		{
+			count--;
+			if(count == 0) Db = 0;
+		}
 
 		delay(1000);
 	}
