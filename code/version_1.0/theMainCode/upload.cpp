@@ -12,12 +12,14 @@
 using namespace std;
 
 
-void UploadData(int hr, double lux)
+void UploadData(int hr, double lux, string mov, string Db)
 {
-    int appraise =  85;
-    int sound = hr;
-    int light = lux;
-    float m_x = 1.2f;
+   // int appraise =  85;
+    int HR = hr;
+    float LUX = lux;
+
+    char db[20] = "quiet" , mov[20] = "inactive";
+  //  float m_x = 1.2f;
 
     char time[20] = "2021-03-20 04:06:35";
     
@@ -33,7 +35,7 @@ void UploadData(int hr, double lux)
         cout << "connect success" << endl;
         //res = mysql_query(conn, "insert into test values('user','123456')");
 
-        snprintf(str, 185, "insert into sleepquality_db.information_list (appraise, sound, light, movement_x, movement_y, movement_z, time) values (%d, %d, %d, %f, %f, %f, '%s');", appraise, sound, light, m_x, 0.0f, 0.0f, time);
+        snprintf(str, 185, "insert into sleepquality_db.newinformation_list (hr, mov, DB, lux, time) values (%d, '%s', '%s', %f, '%s');", HR, mov, db, LUX, time);
         cout << str << endl;
         //mysql_query(conn,str);
  
@@ -104,7 +106,7 @@ int main(int argc,char *argv[])
 			if(count == 0) Db = "quiet";
 		}
 
-		thread job1(UploadData , hr , lux);
+		thread job1(UploadData , hr , lux , mov , Db);
 		job1.join();
 
 		delay(1000);
