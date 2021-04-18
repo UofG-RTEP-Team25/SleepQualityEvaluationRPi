@@ -90,9 +90,9 @@ https://github.com/ZhouyangBolun
 
 * [Twitter](https://twitter.com/stu48737417/status/1383792250539319297?s=21) 
 
-* [Youtube](https://www.youtube.com/watch?v=cMlTJh96JMU) 
+* [Youtube](https://youtu.be/mwlHTAMtvnc) 
 
-* [Instagram](https://www.instagram.com/glasgowteam15/) 
+* [Instagram](https://instagram.com/p/CNz8GmEj6gM/) 
 
 
 Project Link: [ https://github.com/UofG-RTEP-Team25/SleepQualityEvaluationRPi]( https://github.com/UofG-RTEP-Team25/SleepQualityEvaluationRPi)
