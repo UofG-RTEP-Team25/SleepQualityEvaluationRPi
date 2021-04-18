@@ -12,9 +12,9 @@ using namespace std;
 
 extern int hr;
 
-int fd , rd_ptr = 0 , ir_data = 0 , tem , sample_num = 0;
-uint32_t data_buffer[100] , non_buffer[100];
-int32_t n_sp02 , n_heart_rate;
+int fd , rd_ptr = 0 , ir_data = 0 , tem , sample_num = 0 , avg_buffer[3] = {0 , 0 , 0};
+uint32_t data_buffer[100] , non_buffer[100]  ;
+int32_t n_sp02 , n_heart_rate ;
 int8_t ch_spo2_valid , ch_hr_valid;
 double temp;
 unsigned char init_data_2[2] = { REG_INTR_STATUS_1 , REG_INTR_STATUS_2 };
@@ -77,10 +77,73 @@ void max30102_read_hr( void )// read hear rates data from MAX30102.
 	else	
 	{
 		sample_num = 0;
+		hr = 0;
 		maxim_heart_rate_and_oxygen_saturation( data_buffer , 100 , non_buffer , &n_sp02 , &ch_spo2_valid , &n_heart_rate , &ch_hr_valid);//calculate HR with saved data from FIFO.
-                if(n_heart_rate == -999) hr = 0;
-		else hr = n_heart_rate;
-		
+
+		if(n_heart_rate == -999)
+		{
+			avg_buffer[0] = avg_buffer[1];
+			avg_buffer[1] = avg_buffer[2];
+			avg_buffer[2] = 0;
+
+			for(fd = 0; fd < 3; fd++)
+			{
+				hr += avg_buffer[fd];
+			}
+			hr = hr/3;
+		}
+		else if(n_heart_rate  > 50 && n_heart_rate < 110) 
+		{
+			if(n_heart_rate - avg_buffer[2] > 15 || n_heart_rate - avg_buffer[2] < -15)
+			{
+				if(n_heart_rate - avg_buffer[2] > 50 )
+				{
+					avg_buffer[0] = avg_buffer[1];
+					avg_buffer[1] = avg_buffer[2];
+                                        avg_buffer[2] = n_heart_rate;
+					for(fd = 0; fd < 3; fd++)
+					{
+						hr += avg_buffer[fd];
+					}
+					hr = hr/3;
+				}
+				else
+				{
+					avg_buffer[0] = avg_buffer[1];
+					avg_buffer[1] = avg_buffer[2]; 
+					for(fd = 0; fd < 3; fd++)
+					{
+						hr += avg_buffer[fd];
+					}
+					hr = hr/3;
+
+				}
+
+			}
+			else
+			{
+					avg_buffer[0] = avg_buffer[1];
+					avg_buffer[1] = avg_buffer[2];
+                                        avg_buffer[2] = n_heart_rate;
+					for(fd = 0; fd < 3; fd++)
+					{
+						hr += avg_buffer[fd];
+					}
+					hr = hr/3;
+			}
+		}
+		else
+		{
+			avg_buffer[0] = avg_buffer[1];
+			avg_buffer[1] = avg_buffer[2];
+			for(fd = 0; fd < 3; fd++)
+			{
+				hr += avg_buffer[fd];
+			}
+			hr = hr/3;
+		}
+
+
 		//read chip temperature.
 	/*	i2c_write_reg8(9 , 8 , 0xAE , 0x21 , 0x01);// enable temperature sensor
 		temp = i2c_read_reg8_singleByte(9 , 8 , 0xAE , 0xAF , 0x1f) + 0.625*i2c_read_reg8_singleByte(9 , 8 , 0xAE , 0xAF , 0x20);//read data from register and calculate temperature.

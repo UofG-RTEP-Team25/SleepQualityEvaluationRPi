@@ -140,7 +140,7 @@ void maxim_heart_rate_and_oxygen_saturation(uint32_t *pun_ir_buffer,  int32_t n_
         for (k=1; k<n_npks; k++)
             n_peak_interval_sum += (an_dx_peak_locs[k]-an_dx_peak_locs[k -1]);
         n_peak_interval_sum=n_peak_interval_sum/(n_npks-1);
-        *pn_heart_rate=(int32_t)(1500/n_peak_interval_sum);// beats per minutes
+        *pn_heart_rate=(int32_t)(1400/n_peak_interval_sum);// beats per minutes
         *pch_hr_valid  = 1;
     }
     else  {
