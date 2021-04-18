@@ -10,9 +10,9 @@
 
 using namespace std;
 
-extern string Db;
+extern int Db;
 extern int count;
-
+extern double pre_lux;
 
 void max44009_init()
 {
@@ -36,6 +36,8 @@ double max44009_read_light()
 	}
 	num = temp_num & 0x0f;
 	lux = square * num * 0.72;
+	if(lux > 3000) lux = pre_lux;
+	pre_lux = lux;
 
 	return lux;
 
@@ -45,7 +47,7 @@ double max44009_read_light()
 void sound_detect()
 {
 	count = 50;
-	Db = "noisy";
+	Db = 1;
 }
 
 
