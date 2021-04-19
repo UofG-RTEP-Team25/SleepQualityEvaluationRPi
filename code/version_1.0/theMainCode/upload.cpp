@@ -19,7 +19,15 @@ int count = 0 , hr = 0 , sleep_status = 0;
 double lux , pre_lux , efficiency , mark1 , mark2 , mark3;
 int  Db = 0 , mov = 0 , flag = 1 , overall_mark;
 
+string getTime()
+{
+	char tmp[20];
+	time_t timep;
+	time(&timep);
+	strftime(tmp , sizeof(tmp) , "%d-%m-%Y %H:%M:%S" , localtime(&timep));
+	return tmp;
 
+}
 
 
 
@@ -28,7 +36,12 @@ void UploadData(int hr, double lux, int mov, int Db , int flag , int sleep_statu
     int HR = hr , appraise;
     float LUX = lux;
     char DB[20] = "quiet" , MOV[20] = "inactive";
-    char time[20] = "0";
+    char time[20];
+    string tmp;
+
+
+    tmp = getTime();
+    strcpy( time , tmp.c_str());
 
     switch(sleep_status)
     {
