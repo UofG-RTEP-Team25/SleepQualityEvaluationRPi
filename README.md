@@ -40,6 +40,9 @@ A implementation of project to use Raspberry Pi based device to detecting and ev
 [MAX44009](https://github.com/UofG-RTEP-Team25/SleepQualityEvaluationRPi/blob/main/code/MAX44009_and_SoundSensor/MAX44009.pdf)
 
 ## hardware-wiring
+
+![HARDWARE](https://user-images.githubusercontent.com/77977624/115287277-a7ebc900-a182-11eb-9513-5aaf973b1d3e.png)
+
 # how it works
 We used four sensors: sound sensor, light sensor, heartbeat measurement sensor and movement sensor. Connect these four sensors to the Raspberry Pi, and upload the data from the sensors to the Raspberry Pi through the iic interface on the Raspberry Pi. Then use our algorithm to calculate this data on the Raspberry Pi, and then get the sleep quality score. We also set up a set of servers and a mysql database. We upload the sensor data collected by the Raspberry Pi and the calculated sleep quality score to the mysql database through the interface. The server obtains the data in the database and displays it on a web page. The above processes are all real-time, and users can obtain various data and sleep quality scores during their sleep through this web page.(http://78.141.235.21/rtshow3.html)
 
@@ -55,7 +58,7 @@ Here, assessment as follows:
 
 * Sleep efficiency, which is the minutes of total sleep divided by the minutes spent on bed. In normal cases, it falls between 85%-90%.
 
-* Sleep stages, which are based on the data coming from various kinds of sensors, like sound sensors, light sensors, motion sensors as well as heart rhythm sensors.
+* Sleep stages, which are based on the data coming from various kinds of sensors, like sound sensors, light sensors, motion sensors as well as heart rate sensors.
 
 # data visualization example
 By using mysql database, the local Raspberry Pi can connect and push the data to the database, and the website can grabbing and showing the data in properly way to the user.
