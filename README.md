@@ -28,7 +28,7 @@
 
 
 # about-the-project
-A implementation of project to use Raspberry Pi based device to detecting and evaluating sleep quality, use C++ mostly.
+A implementation of project to use Raspberry Pi based device to monitoring and evaluating sleep quality, use C++ mostly.
 # hardware-introduction
 ## hardware-used
 [raspberrypi4B](https://www.raspberrypi.org/software/operating-systems/)
@@ -42,6 +42,15 @@ A implementation of project to use Raspberry Pi based device to detecting and ev
 ## hardware-wiring
 
 ![HARDWARE](https://user-images.githubusercontent.com/77977624/115287277-a7ebc900-a182-11eb-9513-5aaf973b1d3e.png)
+
+# LOGICAL FLOW CHART
+
+
+[LOGICAL FLOW CHART.pdf](https://github.com/UofG-RTEP-Team25/SleepQualityEvaluationRPi/files/6339300/LOGICAL.FLOW.CHART.pdf)
+![SOFTWARE](https://user-images.githubusercontent.com/77977624/115307798-54867480-a19c-11eb-8f66-2f222403e95e.png)
+
+
+
 
 # how it works
 We used four sensors: sound sensor, light sensor, heartbeat measurement sensor and movement sensor. Connect these four sensors to the Raspberry Pi, and upload the data from the sensors to the Raspberry Pi through the iic interface on the Raspberry Pi. Then use our algorithm to calculate this data on the Raspberry Pi, and then get the sleep quality score. We also set up a set of servers and a mysql database. We upload the sensor data collected by the Raspberry Pi and the calculated sleep quality score to the mysql database through the interface. The server obtains the data in the database and displays it on a web page. The above processes are all real-time, and users can obtain various data and sleep quality scores during their sleep through this web page.(http://78.141.235.21/rtshow3.html)
