@@ -92,13 +92,19 @@ Better view has been implemented. the page will showing data when the page finis
 ## contact-us
 
 Zhongju Zhu    -Real-time Embeded programming :2547408Z@student.gla.ac.uk
-https://github.com/zhuzhongju
 
-Shengtao Zhong  -PR & documentation:-2586232Z@student.gla.ac.uk
-https://github.com/stugithub2020
+github: https://github.com/zhuzhongju
+
+
+Shengtao Zhong  -PR & documentation:2586232Z@student.gla.ac.uk
+
+github: https://github.com/stugithub2020
+
 
 Yangbolun Zhou  -Web sever & display programming:2515369Z@student.gla.ac.uk
-https://github.com/ZhouyangBolun
+
+github: https://github.com/ZhouyangBolun
+
 
 * [Twitter](https://twitter.com/stu48737417/status/1383792250539319297?s=21) 
 
